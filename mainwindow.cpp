@@ -1,11 +1,7 @@
 #include <QTimer>
 #include <QPushButton>
 #include <QRandomGenerator>
-
 #include "mainwindow.h"
-
-
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -27,11 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
             auto tm = new QTimer(pb);
             tm->setInterval(17);
             int speed = rg_2->bounded(1,2);
+            connect(pb, &QPushButton::clicked, pb, &QPushButton::deleteLater);
             connect(tm, &QTimer::timeout,
                 [pb, this, speed]{
                 pb->move(pb->pos()+QPoint(0,speed * (pb->underMouse() ? 2 : 1)));
-                if(pb->isDown())
-                    pb->deleteLater();
                 if(pb->pos().y() >= this->height()-pb->height())
                 {
                     QPalette Pal(palette());
