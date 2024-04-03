@@ -14,20 +14,20 @@ MainWindow::MainWindow(QWidget *parent)
         [this, tmStart, rg_2]{
             tmStart->setInterval(rg_2->bounded(100, 1000));
             auto pb = new QPushButton("*", this);
-            int squareWidth = 50;
-            int squareHeight = 50;
-            int x = rg_2->bounded(0, this->width()- squareWidth);
-            int y = rg_2->bounded(0, 100);
+            constexpr int squareWidth = 50;
+            constexpr int squareHeight = 50;
+            const int x = rg_2->bounded(0, this->width()- squareWidth);
+            const int y = rg_2->bounded(0, 100);
             pb->setGeometry(x, y ,squareWidth, squareHeight);
             pb->show();
             auto tm = new QTimer(pb);
-            tm->setInterval(17);
+            tm->setInterval(1000/60);   // 60 Гц - частота монитора
             int speed = rg_2->bounded(1,2);
             connect(pb, &QPushButton::clicked, pb, &QPushButton::deleteLater);
             connect(tm, &QTimer::timeout,
                 [pb, this, speed]{
                 pb->move(pb->pos()+QPoint(0,speed * (pb->underMouse() ? 2 : 1)));
-                if(pb->pos().y() >= this->height()-pb->height())
+                if(pb->pos().y() >= height()-pb->height())
                 {
                     QPalette Pal(palette());
                     Pal.setColor(QPalette::Background, Qt::red);
